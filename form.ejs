@@ -5,24 +5,89 @@
             Form
         </title>
         <link rel="stylesheet" href="/css/site.css"/>
+        <link rel="icon" type="image/x-icon" href="/images/neuicon.png">
+        <script src="/js/form.js" defer></script>
     </head>
     <body>
-        <form>
+        <form name="scamform" id="scamform" action="/form" method="post">
             <div id="pageRestricted">
                 <table id="header">
                     <tbody>
                         <tr>
                             <td>
-                                <div id="title">
-                                    <h1>Student Information Form</h1>
-                                </div>
+                            <div id="title">
+                            <h1>Student Information Form</h1>
+                            </div>
                             </td>
                         </tr>
                     </tbody>
                 </table>
                 <table id="navBar"></table>
                 <div id="main">
-                    
+                    <table>
+                        <tbody>
+                            <h3> General Information </h3>
+                            <tr>
+                                <td>
+                                    <b>First Name: </b>
+                                    <input type="text" 
+                                    placeholder="John" 
+                                    id="firstname"
+                                    name="firstname" 
+                                    value="<%= fname %>" />
+                                    <br>
+                                    <span id="fnameError" class="errorText"></span>
+                                    <br>
+                                </td>
+                                <td>
+                                    <b>Last Name: </b>
+                                    <input type="text" 
+                                    placeholder="Doe" 
+                                    id="lastname"
+                                    name="lastname" 
+                                    value="<%= lname %>" />
+                                    <br>
+                                    <span id="lnameError" class="errorText"></span>
+                                    <br>
+                                </td>
+                                <td>
+                                    <b>Phone Number: </b>
+                                    <input type="text" 
+                                    placeholder="10 digits" 
+                                    id="phonenumber"
+                                    name="phonenumber" 
+                                    value="<%= phone %>" />
+                                    <br>
+                                    <span id="phoneError" class="errorText"></span>
+                                    <br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Address: </b>
+                                    <input type="text" 
+                                    placeholder="Address line" 
+                                    id="address"
+                                    name="address" 
+                                    value="<%= addr %>" />
+                                    <br>
+                                    <span id="addrError" class="errorText"></span>
+                                    <br>
+                                </td>
+                                <td>
+                                    <b>Date of Birth: </b>
+                                    <input type="date"                             
+                                    id="dob"
+                                    name="dob" 
+                                    value="<%= dob %>" />
+                                    <br>
+                                    <span id="dobError" class="errorText"></span>
+                                    <br>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <input type="submit" value="Submit" />
                 </div>
             </div>
         </form>
