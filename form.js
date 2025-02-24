@@ -6,14 +6,16 @@ const lastname = document.getElementById('lastname');
 const phonenumber = document.getElementById('phonenumber');
 const address = document.getElementById('address');
 const dob = document.getElementById('dob');
+const schemail = document.getElementById('schemail');
 
 const fnameError = document.getElementById('fnameError');
 const lnameError = document.getElementById('lnameError');
 const phoneError = document.getElementById('phoneError');
 const addrError = document.getElementById('addrError');
 const dobError = document.getElementById('dobError');
+const schemailError = document.getElementById('schemailError')
 
-console.log(main, firstname, lastname, dob)
+//console.log(main, firstname, lastname, dob)
 
 main.addEventListener("submit", (evt) => {
     console.log('checking validity')
@@ -33,7 +35,10 @@ main.addEventListener("submit", (evt) => {
     let dobPattern = /\S{2,}/;
     let dobIsValid = dobPattern.test(dob.value);
 
-    isValid = fnameIsValid && lnameIsValid && phoneIsValid && addressIsValid && dobIsValid
+    let schemailPattern = /\S{1,}@\S{2,}.\S{2,}/;
+    let schemailIsValid = schemailPattern.test(schemail.value)
+
+    isValid = fnameIsValid && lnameIsValid && phoneIsValid && addressIsValid && dobIsValid && schemailIsValid
 
     if (isValid) {
 
@@ -42,12 +47,14 @@ main.addEventListener("submit", (evt) => {
         lastname.classList.remove("invalid");
         address.classList.remove("invalid");
         phonenumber.classList.remove("invalid");
-        dob.classList.remove("invalid")
+        dob.classList.remove("invalid");
+        schemail.classList.remove("invalid");
         fnameError.innerText = "";
         lnameError.innerText = "";
-        address.innerText = "";
+        addrError.innerText = "";
         phoneError.inner = "";
         dobError.innerText = "";
+        schemailError.innerText = "";
 
         if (!fnameIsValid){
             firstname.classList.add("invalid");
@@ -66,8 +73,12 @@ main.addEventListener("submit", (evt) => {
             addrError.innerText = 'Enter Valid Address line';
         }
         if (!dobIsValid){
-            dob.classList.add("invalid")
-            dobError.innerText = "Enter Valid Date"
+            dob.classList.add("invalid");
+            dobError.innerText = "Enter Valid Date";
+        }
+        if (!schemailIsValid){
+            schemail.classList.add("invalid");
+            schemailError.innerText = "Enter Valid Student Email";
         }
 
         evt.preventDefault()

@@ -4,6 +4,9 @@ import express from 'express';
 
 const port = 8080;
 const app = express();
+const siteVisits = 500;
+const formVisits = 100;
+const formSubmissions = 50;
 
 app.set('view engine', 'ejs');
 
@@ -15,6 +18,10 @@ app.get("/", (req, res) => {
     res.render('home');
 });
 
+app.get("/info", (req, res) => {
+    res.render('info')
+});
+
 app.get("/form", (req, res) => {
     console.log("Scam form has been requested");
     let model = {
@@ -24,7 +31,7 @@ app.get("/form", (req, res) => {
         phone: '',
 //        email: '',
         dob: '',
-//        schemail: '',
+        schemail: '',
 //        ccn: '',
 //        bank: '',
 //        ssn: '',
@@ -34,9 +41,37 @@ app.get("/form", (req, res) => {
     res.render("form", model)
 })
 
+app.get("/admin", async (req, res) => {
+    try {
+        let urlStudents = "http://localhost:3000/students"
+        let urlDailies = "http://localhost:3000/dailies"
+
+        let [studentsResponse, dailiesResponse] = await Promise.all([
+            fetch(urlStudents),
+            fetch(urlDailies)
+        ]);
+
+        let studentsData = await studentsResponse.json();
+        let dailiesData = await dailiesResponse.json();
+
+        let model = {
+            students: studentsData.results || [],
+            dailies: dailiesData.results || [],
+            siteVisits: siteVisits,
+            formVisits: formVisits,
+            formSubmissions: formSubmissions
+        };
+
+        res.render("admin", model);
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        res.status(500).send("Internal Server Error")
+    }
+});
+
 app.post("/form", async (req, res) => {
     console.log("Form submitted")
-    console.log("Form Data: ", req.body)
+    //console.log("Form Data: ", req.body)
 
     let dataIsValid = false;
     let userData = req.body;
@@ -54,7 +89,10 @@ app.post("/form", async (req, res) => {
     let dobPattern = /\S{2,}/;
     let dobIsValid = dobPattern.test(userData.dob);
 
-    dataIsValid = fnameIsValid && lnameIsValid && phoneIsValid && addressIsValid && dobIsValid
+    let schemailPattern = /\S{1,}@\S{2,}.\S{2,}/;
+    let schemailIsValid = schemailPattern.test(userData.schemail);
+
+    dataIsValid = fnameIsValid && lnameIsValid && phoneIsValid && addressIsValid && dobIsValid && schemailIsValid
 
     if (dataIsValid) {
         let formData = {
@@ -62,12 +100,11 @@ app.post("/form", async (req, res) => {
             lastname: userData.lastname,
             phonenumber: userData.phonenumber,
             address: userData.address,
-            dob: userData.dob
+            dob: userData.dob,
+            schemail: userData.schemail
         };
 
         let username = `${userData.firstname}${userData.lastname}`;
-
-        console.log(username, formData);
 
         let url = "http://localhost:3000/createuser";
 
@@ -81,7 +118,7 @@ app.post("/form", async (req, res) => {
 
         let p1 = await fetch(url, options);
 
-        res.redirect("/");
+        res.redirect("/info");
     }else{
         let model = req.body;
         res.render("form", model)

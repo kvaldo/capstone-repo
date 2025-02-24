@@ -1,0 +1,255 @@
+.hidden {
+    display: none;
+}
+
+.table-container {
+    max-height: 300px;
+    overflow-y: auto; 
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+body {
+    background: #2e3845;
+    font-size: 13px;
+    font-family: "Helvetica Neue", "Lucida Grande", "Segoe UI", Arial, Helvetica, Verdana, sans-serif;
+    margin: 0px;
+    padding: 0px;
+    color: #1f1f1f;
+}
+
+form {
+    display: block;
+    margin-top: 0em;
+    unicode-bidi: isolate;
+}
+
+div {
+    display: block;
+    unicode-bidi: isolate;
+}
+
+div#pageRestricted {
+    background-color: #FFF;
+    border: 1px solid #1f1f1f;
+    margin: 20px auto 0px auto;
+    max-width: 960px;
+}
+
+img {
+    min-width: none;
+    min-height: none;
+    max-width: 10%;
+    max-height: 10%;
+}
+
+table {
+    font-size: 100%;
+}
+
+table {
+    display: table;
+    border-collapse: separate;
+    box-sizing: border-box;
+    text-indent: initial;
+    unicode-bidi: isolate;
+    border-spacing: 2px;
+}
+
+tbody {
+    display: table-row-group;
+    vertical-align: middle;
+    unicode-bidi: isolate;
+    border-color: inherit;
+}
+
+th {
+    display: table-cell;
+    vertical-align: inherit;
+    unicode-bidi: isolate;
+    margin-block-start: 5px;
+    margin-block-end: 5px;
+    width: fit-content;
+    height: fit-content
+}
+
+td {
+    display: table-cell;
+    vertical-align: inherit;
+    unicode-bidi: isolate;
+    margin-block-start: 5px;
+    margin-block-end: 5px;
+    width: fit-content;
+}
+
+input {
+    margin-block-start: 5px;
+    margin-block-end: 5px;
+    vertical-align: middle;
+}
+
+b {
+    font-size: 115%;
+}
+
+H1, H2, H3, H4 {
+    color: #333;
+}
+
+H2 {
+    font-size: 155%;
+}
+
+H3 {
+    font-size: 129%;
+}
+
+H4 {
+    font-size: 105%;
+}
+
+.link, a {
+    cursor: pointer;
+    color: #333;
+    text-decoration: underline;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+ul {
+    display: block;
+    list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+    unicode-bidi: isolate;
+}
+
+li {
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+ul.nospace li {
+    padding: 0px;
+}
+.invalid {
+    border-color: red;
+}
+
+.errorText {
+    color: rgb(255, 62, 62);
+    font-weight: bold;
+}
+
+.tab-container {
+    margin-bottom: 20px;
+}
+
+.tab-button {
+    padding: 10px 20px;
+    margin-right: 5px;
+    border: none;
+    background-color: #ddd;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.tab-button.active {
+    background-color: #FD0;
+    color: black;
+}
+
+.chart-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+}
+
+#header {
+    position: relative;
+    margin: 0px;
+    padding: 0px;
+    background: #FD0;
+    width: 100%;
+}
+
+    #header h1 {
+        font-weight: 700;
+        margin: 0px;
+        padding: 0px 0px 0px 20px;
+        color: #333;
+        border: none;
+        line-height: 2em;
+    }
+
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+    unicode-bidi: isolate;
+}
+
+#title {
+    display: block;
+}
+
+#navBar {
+    width: 100%;
+    padding: 8px 8px 8px 20px;
+    background-color: #1f1f1f;
+    color: white;
+}
+
+#main {
+    padding: 4px 12px;
+    margin: 12px 8px 8px 8px;
+    min-height: 420px;
+}
+
+#studentBox {
+    border: 2px solid #1f1f1f;
+    border-radius: 10px;
+    border-collapse: separate;
+    width: 100%;
+}
+
+#studentBox th, #studentBox td {
+    border: 2px solid black;
+    border-radius: 8px;
+    padding: 8px;
+}
+
+#studentBox th {
+    background-color: #f7e465;
+}
+
+#studentBox p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: auto;
+}
+
+#statsChart {
+        width: 100%;  /* Responsive width */
+        max-width: 800px;  /* Maximum width */
+        height: 100%;  /* Set a specific height */
+        max-height: 200px
+}
+
+footer {
+    padding: 8px 0px;
+    margin: 0px auto;
+    text-align: center;
+    line-height: normal;
+    color: #f1f1f1;
+}

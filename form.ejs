@@ -34,7 +34,8 @@
                                     placeholder="John" 
                                     id="firstname"
                                     name="firstname" 
-                                    value="<%= fname %>" />
+                                    value="<%= fname %>" 
+                                    maxlength="25"/>
                                     <br>
                                     <span id="fnameError" class="errorText"></span>
                                     <br>
@@ -45,7 +46,8 @@
                                     placeholder="Doe" 
                                     id="lastname"
                                     name="lastname" 
-                                    value="<%= lname %>" />
+                                    value="<%= lname %>" 
+                                    maxlength="25"/>
                                     <br>
                                     <span id="lnameError" class="errorText"></span>
                                     <br>
@@ -56,7 +58,8 @@
                                     placeholder="10 digits" 
                                     id="phonenumber"
                                     name="phonenumber" 
-                                    value="<%= phone %>" />
+                                    value="<%= phone %>" 
+                                    maxlength="20"/>
                                     <br>
                                     <span id="phoneError" class="errorText"></span>
                                     <br>
@@ -69,7 +72,8 @@
                                     placeholder="Address line" 
                                     id="address"
                                     name="address" 
-                                    value="<%= addr %>" />
+                                    value="<%= addr %>" 
+                                    maxlength="100"/>
                                     <br>
                                     <span id="addrError" class="errorText"></span>
                                     <br>
@@ -79,9 +83,23 @@
                                     <input type="date"                             
                                     id="dob"
                                     name="dob" 
-                                    value="<%= dob %>" />
+                                    value="<%= dob %>" 
+                                    min="1924-01-01"
+                                    max="2006-02-13"/>
                                     <br>
                                     <span id="dobError" class="errorText"></span>
+                                    <br>
+                                </td>
+                                <td>
+                                    <b>School Email Address: </b>
+                                    <input type="email"
+                                    placeholder="example@student.neumont.edu"                             
+                                    id="schemail"
+                                    name="schemail" 
+                                    value="<%= schemail %>"
+                                    maxlength="45"/>
+                                    <br>
+                                    <span id="schemailError" class="errorText"></span>
                                     <br>
                                 </td>
                             </tr>
