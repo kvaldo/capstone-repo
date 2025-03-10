@@ -7,6 +7,7 @@
         <link rel="stylesheet" href="/css/site.css"/>
         <link rel="icon" type="image/x-icon" href="/images/neuicon.png">
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script defer src="/js/dashboard.js"></script>
     </head>
     <body>
         <form name="dashboard" id="dashboard" >
@@ -28,10 +29,14 @@
                     <div class="tab-contatiner">
                         <button class="tab-button active" data-chart="statsChart">Website Traffic</button>
                         <button class="tab-button" data-chart="dailyChart">Daily Submissions</button>
+                        <button class="tab-button" data-chart="osChart">Operating Systems</button>
+                        <button class="tab-button" data-chart="browserChart">Browsers</button>
                     </div>
                     <div class="chart-container">
                         <canvas id="statsChart"></canvas>
                         <canvas id="dailyChart" style="display: none;"></canvas>
+                        <canvas id="osChart" style="display: none;"></canvas>
+                        <canvas id="browserChart" style="display: none;"></canvas>
                     </div>
                     <h2>User Information</h2>
                     <label for="sortBy"><b>Sort By:</b></label>
@@ -43,22 +48,7 @@
                     <input type="text" id="filterText" placeholder="Search Name">
                     <div class="table-container">
                         <table id="studentBox">
-                            <tbody id="studentTableBody">
-                                <% for(let student of students) {%>
-                                    <tr class="student-row">
-                                        <th><h3 class="student-name"><%= student.firstname %> <%= student.lastname %></h3></th>
-                                        <td>
-                                            <h3>Compromised Info:</h3>
-                                            <ul>
-                                                <li><b>Phone Number:</b> <%= student.phonenumber %></li>
-                                                <li><b>Mailing Address:</b> <%= student.address %></li>
-                                                <li><b>Date of Birth:</b> <%= student.dob %></li>
-                                                <li><b>School Email:</b> <%= student.schemail %></li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                <% } %>
-                            </tbody>
+                            <tbody id="studentTableBody"></tbody>
                         </table>
                     </div>
                 </div>
@@ -66,133 +56,14 @@
         </form>
 
         <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                const ctx1 = document.getElementById('statsChart').getContext('2d');
-                const ctx2 = document.getElementById('dailyChart').getContext('2d');
-                const studentTableBody = document.getElementById("studentTableBody");
-                const sortBySelect = document.getElementById("sortBy");
-                const filterTextInput = document.getElementById("filterText");
-
-                const statsData = {
-                    labels: ['Website Visits', 'Form Visits', 'Form Submissions'],
-                    datasets: [{
-                        label: 'Website Traffic',
-                        data: [<%= siteVisits %>, <%= formVisits %>, <%= formSubmissions %>],
-                        backgroundColor: ['#faec91', '#f7e465', '#FD0'],
-                        borderColor: ['#5E5E5E', '#333333', '#1f1f1f'],
-                        borderWidth: 2
-                    }]
-                };
-
-                const statsChart = new Chart(ctx1, {
-                    type: 'bar',  // You can change this to 'line', 'pie', bar, etc.
-                    data: statsData,
-                    options: {
-                        responsive: true,
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
-                    }
-                });
-
-                const dailyData = {
-                    labels: [
-                        "<%= dailies[6].date %>", "<%= dailies[5].date %>", "<%= dailies[4].date %>", 
-                        "<%= dailies[3].date %>", "<%= dailies[2].date %>", "<%= dailies[1].date %>", "<%= dailies[0].date %>"
-                    ],
-                    datasets: [{
-                        label: 'Form Submissions (Last 7 Days)',
-                        data: [
-                            <%= dailies[6].submissions %>, <%= dailies[5].submissions %>, <%= dailies[4].submissions %>, 
-                            <%= dailies[3].submissions %>, <%= dailies[2].submissions %>, <%= dailies[1].submissions %>, <%= dailies[0].submissions %>
-                        ],
-                        backgroundColor: '#e74c3c',
-                        borderColor: '#c0392b',
-                        borderWidth: 2,
-                        fill: false
-                    }]
-                };
-
-                const dailyChart = new Chart(ctx2, {
-                    type: 'line',
-                    data: dailyData,
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: { beginAtZero: true }
-                        }
-                    }
-                });
-
-                const tabButtons = document.querySelectorAll('.tab-button');
-                const charts = {
-                    statsChart: document.getElementById('statsChart'),
-                    dailyChart: document.getElementById('dailyChart')
-                };
-
-                let students = [
-                    <% students.forEach(student => { %>
-                        { firstname: "<%= student.firstname %>", lastname: "<%= student.lastname %>", 
-                        phonenumber: "<%= student.phonenumber %>", address: "<%= student.address %>", 
-                        dob: "<%= student.dob %>", schemail: "<%= student.schemail %>" },
-                    <% }); %>
-                ];
-
-                function renderTable(filteredStudents) {
-                    studentTableBody.innerHTML = ""; // Clear table
-
-                    filteredStudents.forEach(student => {
-                        let row = `<tr class="student-row">
-                            <th><h3 class="student-name">${student.firstname} ${student.lastname}</h3></th>
-                            <td>
-                                <h3>Compromised Info:</h3>
-                                <ul>
-                                    <li><b>Phone Number:</b> ${student.phonenumber}</li>
-                                    <li><b>Mailing Address:</b> ${student.address}</li>
-                                    <li><b>Date of Birth:</b> ${student.dob}</li>
-                                    <li><b>School Email:</b> ${student.schemail}</li>
-                                </ul>
-                            </td>
-                        </tr>`;
-                        studentTableBody.innerHTML += row;
-                    });
-                }
-
-                function sortStudents() {
-                    let sortBy = sortBySelect.value;
-                    students.sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
-                    renderTable(students);
-                }
-
-                function filterStudents() {
-                    let filterText = filterTextInput.value.toLowerCase();
-                    let filteredStudents = students.filter(student =>
-                        student.firstname.toLowerCase().includes(filterText) || 
-                        student.lastname.toLowerCase().includes(filterText)
-                    );
-                    renderTable(filteredStudents);
-                }
-
-                sortBySelect.addEventListener("change", sortStudents);
-                filterTextInput.addEventListener("input", filterStudents);
-
-                renderTable(students);
-
-                tabButtons.forEach(button => {
-                    button.addEventListener('click', function() {
-                        event.preventDefault();
-
-                        tabButtons.forEach(btn => btn.classList.remove('active'));
-                        this.classList.add('active');
-
-                        Object.values(charts).forEach(chart => chart.style.display = 'none');
-                        charts[this.dataset.chart].style.display = 'block';
-                    });
-                });
-            });
+            window.studentsData = <%- JSON.stringify(model.students) %>;
+            window.statsData = {
+                siteVisits: <%= model.siteVisits %>,
+                formVisits: <%= model.formVisits %>,
+                formSubmissions: <%= model.formSubmissions %>
+            };
+            window.dailiesData = <%- JSON.stringify(model.dailies) %>;
+            window.metadata = <%- JSON.stringify(metadata)%>;
         </script>
     </body>
     <footer>©Kaleo Valdo Capstone 2025</footer>

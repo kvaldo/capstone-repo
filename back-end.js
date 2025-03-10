@@ -33,6 +33,13 @@ app.get("/dailies", async (req, res) => {
     res.json(results);
 })
 
+app.get("/metadata", async (req, res) => {
+    let metaCounts = await DAL.getMetadata();
+    console.log("getting metadata back-end...");
+
+    res.json(metaCounts);
+})
+
 app.post("/createuser", async (req, res) => {
     console.log("CREATE: ", req.body);
     await DAL.createUser(req.body);

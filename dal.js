@@ -39,6 +39,62 @@ export const DAL = {
 
         return dayList;
     },
+    getMetadata: async function() {
+        console.log("getting metedata DAL...")
+        const mongoClient = new MongoClient(mongouri);
+
+        try {
+            const database = mongoClient.db("Capstone");
+            const userCollection = database.collection("users");
+
+            const result = await userCollection.aggregate([
+                {
+                    $project: {
+                        os: {
+                            $switch: {
+                                branches: [
+                                    { case: { $regexMatch: { input: "$useragent", regex: /Windows NT/ } }, then: "Windows" },
+                                    { case: { $regexMatch: { input: "$useragent", regex: /Mac OS X/ } }, then: "Mac OS" },
+                                    { case: { $regexMatch: { input: "$useragent", regex: /Linux/ } }, then: "Linux" }
+                                ],
+                                default: "Unkown OS"
+                            }
+                        },
+                        browser: {
+                            $switch: {
+                                branches: [
+                                    { case: { $regexMatch: { input: "$useragent", regex: /Chrome\/(\d+)/ } }, then: "Chrome" },
+                                    { case: { $regexMatch: { input: "$useragent", regex: /Firefox\/(\d+)/ } }, then: "Firefox" },
+                                    { case: { $regexMatch: { input: "$useragent", regex: /Safari/ } }, then: "Safari" },
+                                    { case: { $regexMatch: { input: "$useragent", regex: /Edge\/(\d+)/ } }, then: "Edge" }
+                                ],
+                                default: "Unknown Browser"
+                            }
+                        }
+                    }
+                },
+                {
+                    $facet: {
+                        osCount: [
+                            { $group: { _id: "$os", count: { $sum: 1 } } },
+                            { $project: { label: "$_id", count: 1, _id: 0 } }
+                        ],
+                        browserCount: [
+                            { $group: { _id: "$browser", count: { $sum: 1 } } },
+                            { $project: { label: "$_id", count: 1, _id: 0 } }
+                        ]
+                    }
+                }
+            ]).toArray();
+
+            return result[0];
+        } catch (error) {
+            console.error("Error fetching metadata DAL:", error);
+            return null;
+        } finally {
+            await mongoClient.close()
+        }
+    },
     createUser: async function(user) {
         console.log("Creating user...")
         
@@ -88,6 +144,6 @@ export const DAL = {
                 }
             })
         });
-    }
+    },
 };
 
